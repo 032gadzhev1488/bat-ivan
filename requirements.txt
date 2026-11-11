@@ -22,20 +22,15 @@ def load_model():
         digits = load_digits()
         X = digits.images.reshape((len(digits.images), -1)) / 16.0
         y = digits.target
-
-        X_train, _, y_train, _ = train_test_split(
-            X, y, test_size=0.2, random_state=42
-        )
+        X_train, _, y_train, _ = train_test_split(X, y, test_size=0.2, random_state=42)
 
         model = MLPClassifier(
             hidden_layer_sizes=(100,),
             max_iter=100,
             random_state=42
         )
-
         model.fit(X_train, y_train)
         return model
-
     except Exception as e:
         st.error(f"Model loading error: {e}")
         return None
@@ -49,10 +44,7 @@ else:
     st.success("Model loaded successfully!")
 
 # File uploader
-uploaded_file = st.file_uploader(
-    "Choose an image file",
-    type=["png", "jpg", "jpeg"]
-)
+uploaded_file = st.file_uploader("Choose an image file",    type=["png", "jpg", "jpeg"])
 
 if uploaded_file is not None:
     # Display the uploaded image
@@ -88,17 +80,12 @@ try:
     else:
         # Fallback: simple threshold-based recognition
         st.write("## Using fallback recognition")
-
         # Simple heuristic based on pixel intensity
-        digit_guess = np.argmax(
-            np.sum(img_array.reshape(8, 8), axis=0)
-        ) % 10
-
+        digit_guess = np.argmax(np.sum(img_array.reshape(8, 8), axis=0)) % 10
         st.write(f"Estimated digit: **{digit_guess}**")
 
 except Exception as e:
     st.error(f"Error processing image: {e}")
-
 
 # Instructions
 st.sidebar.header("Instructions")
